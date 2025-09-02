@@ -18,8 +18,9 @@ class Articles(models.Model):
     def default_thai_time():
         return timezone.now().astimezone(pytz.timezone("Asia/Bangkok"))
     
-    published_date = models.DateTimeField(default=default_thai_time,blank=True, null=True)
-    author = models.ForeignKey('Users', models.DO_NOTHING)
+    update_date = models.DateTimeField(default=default_thai_time,blank=True, null=True)
+    created_at  = models.DateTimeField(default=default_thai_time,blank=True, null=True)
+    author_id = models.ForeignKey('Users', models.DO_NOTHING)
     likes_count = models.IntegerField(default=0,blank=True, null=True)
 
     class Meta:

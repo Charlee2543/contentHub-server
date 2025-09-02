@@ -58,9 +58,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 class LoginSerializer(serializers.Serializer):
    email = serializers.CharField()
-   print('email: ', email)
+   # print('email: ', email)
    password = serializers.CharField()
-   print('password: ', password)
+   # print('password: ', password)
 
    def validate(self, data):
       print('self: ', self)

@@ -9,7 +9,7 @@ class PostListAPIView(APIView):
     def get(self, request):
         print("Start get data")
         # ดึงข้อมูลจาก database
-        posts = Articles.objects.all()
+        posts = Articles.objects.order_by('created_at')[0:10]
         # Post.objects.all() ดึงข้อมูลทั้งหมดจาก table
         # print("posts =  ", {posts})
         # แปลง object ที่ได้่เป็น json

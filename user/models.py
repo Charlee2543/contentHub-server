@@ -15,6 +15,10 @@ class User(models.Model):
    is_active = models.BooleanField(default=True)
    created_at = models.DateTimeField(auto_now_add=True)
    updated_at = models.DateTimeField(auto_now=True)
+   # ใช้ email เป็นหลักในการ login
+   USERNAME_FIELD = 'email'
+   # field ที่จำเป็นเมื่อสร้าง superuser (นอกจาก email และ password)
+   REQUIRED_FIELDS = ['username']
    
    def save(self, *args, **kwargs):
       """Override save method เพื่อให้เวลาเป็น Asia/Bangkok timezone"""
