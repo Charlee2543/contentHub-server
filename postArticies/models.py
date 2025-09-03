@@ -7,6 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from django.utils import timezone
+from user.models import User
 import pytz
 
 class Articles(models.Model):
@@ -18,9 +19,13 @@ class Articles(models.Model):
     def default_thai_time():
         return timezone.now().astimezone(pytz.timezone("Asia/Bangkok"))
     
-    update_date = models.DateTimeField(default=default_thai_time,blank=True, null=True)
+    update_at = models.DateTimeField(default=default_thai_time,blank=True, null=True)
     created_at  = models.DateTimeField(default=default_thai_time,blank=True, null=True)
-    author_id = models.ForeignKey('Users', models.DO_NOTHING)
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,   # หรือ SET_NULL ถ้าจะเก็บ post ไว้แม้ user หาย
+        related_name="articles"     # เวลาเรียกจะได้ user.articles.all()
+    )
     likes_count = models.IntegerField(default=0,blank=True, null=True)
 
     class Meta:
@@ -142,13 +147,13 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
-class Users(models.Model):
-    user_id = models.AutoField(primary_key=True)
-    username = models.CharField(max_length=255)
-    profile_picture_url = models.CharField(max_length=255, blank=True, null=True)
-    email = models.CharField(max_length=255)
-    password = models.CharField(max_length=255)
+# class Users(models.Model):
+#     user_id = models.AutoField(primary_key=True)
+#     username = models.CharField(max_length=255)
+#     profile_picture_url = models.CharField(max_length=255, blank=True, null=True)
+#     email = models.CharField(max_length=255)
+#     password = models.CharField(max_length=255)
 
-    class Meta:
-        managed = False
-        db_table = 'users'
+#     class Meta:
+#         managed = False
+#         db_table = 'users'
