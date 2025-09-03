@@ -155,6 +155,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://192.168.1.38:3000",
     "http://localhost:3000",
+    "https://content-hub-theta.vercel.app"
 ]
 
 CORS_ALLOW_CREDENTIALS = True   # ต้องเปิดเพื่อส่ง cookie ข้ามต้นทาง
