@@ -5,6 +5,7 @@ from django.utils import timezone
 import pytz
 from django.db import models
 from django.contrib.auth.hashers import make_password, check_password
+# from django.contrib.auth.models import AbstractUser
 
 class User(models.Model):
    user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -18,22 +19,27 @@ class User(models.Model):
    # ใช้ email เป็นหลักในการ login
    USERNAME_FIELD = 'email'
    # field ที่จำเป็นเมื่อสร้าง superuser (นอกจาก email และ password)
-   REQUIRED_FIELDS = ['username']
-   
-   def save(self, *args, **kwargs):
-      """Override save method เพื่อให้เวลาเป็น Asia/Bangkok timezone"""
-      bangkok_tz = pytz.timezone("Asia/Bangkok")
-      current_time = timezone.now().astimezone(bangkok_tz)
-      
-      if not self.pk:  # ถ้าเป็นการสร้างใหม่
-            self.created_at = current_time
-      self.updated_at = current_time
-      
-      super().save(*args, **kwargs)
+   EMAIL_FIELD = 'email'
+   REQUIRED_FIELDS = ['username'] 
    
    class Meta:
       managed = False  # สำคัญมาก! บอก Django ว่าตารางนี้ถูกจัดการโดย Database
       db_table = 'users' # กำหนดชื่อตารางใน PostgreSQL 
+   
+   def is_authenticated(self):
+      """Always return True. This is a way to tell if the user has been authenticated."""
+      return True
+   
+   @property
+   def is_anonymous(self):
+      """Always return False. This is a way to tell if the user is not authenticated."""
+      return False
+   
+
+   def get_username(self):
+      """Return the username for this User."""
+      return getattr(self, self.USERNAME_FIELD)
+
       
    def set_password(self, raw_password):
       """Hash password ด้วย bcrypt"""
@@ -51,3 +57,15 @@ class User(models.Model):
 
       # วิธีที่ 2: ใช้ bcrypt โดยตรง
       # return bcrypt.checkpw(raw_password.encode('utf-8'), self.password.encode('utf-8'))   
+   
+   def save(self, *args, **kwargs):
+      """Override save method เพื่อให้เวลาเป็น Asia/Bangkok timezone"""
+      bangkok_tz = pytz.timezone("Asia/Bangkok")
+      current_time = timezone.now().astimezone(bangkok_tz)
+      
+      if not self.pk:  # ถ้าเป็นการสร้างใหม่
+            self.created_at = current_time
+      self.updated_at = current_time
+      
+      super().save(*args, **kwargs)
+   

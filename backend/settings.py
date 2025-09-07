@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'postArticies',
-    "user"
+    "user",
+    'actionPost',
 ]
 
 MIDDLEWARE = [
@@ -170,14 +171,17 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "AUTH_HEADER_TYPES": ("Bearer",),
-    "USER_ID_FIELD": "user_id",
+    "USER_ID_FIELD": "user_id",#user_id
     "USER_ID_CLAIM": "user_id",
 }
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-    "rest_framework_simplejwt.authentication.JWTAuthentication",
+    "backend.authentication.CustomJWTAuthentication",
     ),
+    # "DEFAULT_PERMISSION_CLASSES": (
+    #     "rest_framework.permissions.IsAuthenticated",  # default ต้อง login
+    # ),
 }
 
 # AUTH_USER_MODEL = 'user.User' 

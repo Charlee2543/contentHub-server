@@ -12,6 +12,11 @@ from .models import User
 from django.shortcuts import get_object_or_404
 from decouple import config
 
+
+
+from rest_framework_simplejwt.settings import api_settings
+print(f"USER_ID_FIELD: {api_settings.USER_ID_FIELD}")
+print(f"USER_ID_CLAIM: {api_settings.USER_ID_CLAIM}")
 # Create your views here.
 class UserAPIView(APIView):
    def get(self,request):
@@ -157,9 +162,10 @@ class RefreshTokenCookieView(TokenRefreshView):
          #    return Response({"detail": "Invalid refresh token"}, status=status.HTTP_401_UNAUTHORIZED)
          
          #  validate refresh token
-         serializer = self.get_serializer(data={"refresh":refresh})
+         # serializer = self.get_serializer(data={"refresh":refresh})
          serializer.is_valid(raise_exception=True)
          data = serializer.validated_data  # contains access and maybe refresh (if rotate)
+         print('data: ', data)
          access = data.get("access")
          new_refresh = data.get("refresh", None)
          resp = Response({
