@@ -37,7 +37,7 @@ class PostDetailAPIView(APIView):
             article = get_object_or_404(Articles, article_id=article_id)
             # article = Articles.objects.filter(article_id=article_id).values()
             serializer = PostSerializer(article)
-            return Response(serializer.data)            
+            return Response(serializer.data,status=status.HTTP_200_OK)            
 
         except Articles.DoesNotExist:
             return Response(

@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=255)),
                 ('picture', models.TextField()),
                 ('content', models.TextField()),
-                ('update_at', models.DateTimeField(blank=True, default=postArticies.models.Articles.default_thai_time, null=True)),
+                ('updated_at', models.DateTimeField(blank=True, default=postArticies.models.Articles.default_thai_time, null=True)),
                 ('created_at', models.DateTimeField(blank=True, default=postArticies.models.Articles.default_thai_time, null=True)),
                 ('likes_count', models.IntegerField(blank=True, default=0, null=True)),
             ],

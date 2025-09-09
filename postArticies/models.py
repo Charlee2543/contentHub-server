@@ -19,12 +19,14 @@ class Articles(models.Model):
     def default_thai_time():
         return timezone.now().astimezone(pytz.timezone("Asia/Bangkok"))
     
-    update_at = models.DateTimeField(default=default_thai_time,blank=True, null=True)
+    updated_at = models.DateTimeField(default=default_thai_time,blank=True, null=True)
     created_at  = models.DateTimeField(default=default_thai_time,blank=True, null=True)
     author = models.ForeignKey(
         User,
+        # to_field="user_id",              # บอกว่าผูกกับ user.user_id (UUID) 
+        # db_column="author_id",              # ชื่อ column ในตาราง articles มีก็ได้ไม่มีก็ได้
         on_delete=models.CASCADE,   # หรือ SET_NULL ถ้าจะเก็บ post ไว้แม้ user หาย
-        related_name="articles"     # เวลาเรียกจะได้ user.articles.all()
+        # related_name="articles"     # เวลาเรียกจะได้ user.articles.all()
     )
     likes_count = models.IntegerField(default=0,blank=True, null=True)
 

@@ -15,8 +15,7 @@ from decouple import config
 
 
 from rest_framework_simplejwt.settings import api_settings
-print(f"USER_ID_FIELD: {api_settings.USER_ID_FIELD}")
-print(f"USER_ID_CLAIM: {api_settings.USER_ID_CLAIM}")
+
 # Create your views here.
 class UserAPIView(APIView):
    def get(self,request):

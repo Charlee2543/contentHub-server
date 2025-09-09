@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'postArticies',
     "user",
-    'actionPost',
+    'commentPost',
 ]
 
 MIDDLEWARE = [
@@ -179,6 +179,9 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
     "backend.authentication.CustomJWTAuthentication",
     ),
+    #     'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticatedOrReadOnly',  # อ่านได้ทุกคน เขียนได้เฉพาะคน login
+    # ],
     # "DEFAULT_PERMISSION_CLASSES": (
     #     "rest_framework.permissions.IsAuthenticated",  # default ต้อง login
     # ),
