@@ -33,6 +33,7 @@ class CommentPost(APIView):
             
       # Filter by type (main comments หรือ replies)
       comment_type = request.query_params.get('type', 'main')
+      print('comment_type: ', request.query_params.get)
       if comment_type == 'main':
             # เฉพาะ main comments (parent=None) พร้อม prefetch replies
             queryset = queryset.filter(parent=None).prefetch_related(
@@ -46,21 +47,24 @@ class CommentPost(APIView):
                queryset = queryset.filter(parent_id=parent_id)
 
       # เรียงจากใหม่ไปเก่า
-      queryset = queryset.order_by('-created_at')
+      queryset = queryset.order_by('-created_at')#[3:5]#limit
       
       # Serialize data และส่งกลับ
       serializer = CommentSerializer(queryset, many=True)
       return Response(serializer.data)
 
    def post(self, request):
-      """
-      POST /api/comments/
-      สร้าง comment ใหม่
-      """
-      # ใช้ CommentCreateSerializer สำหรับ validation
-      serializer = CommentCreateSerializer(data=request.data, context={'request': request})
-      
-      if serializer.is_valid():
+
+        """
+        POST /api/comments/
+        สร้าง comment ใหม่
+        """
+        print('request: ', request)
+        print('self: ', self)
+        # ใช้ CommentCreateSerializer สำหรับ validation        
+        serializer = CommentCreateSerializer(data=request.data, context={'request': request})
+
+        if serializer.is_valid():
             # บันทึกลง database
             comment = serializer.save()
             
@@ -69,7 +73,7 @@ class CommentPost(APIView):
             return Response(response_serializer.data, status=status.HTTP_201_CREATED)
       
       # ถ้า validation ผิด ส่งกลับ errors
-      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CommentByArticleView(APIView):
     """

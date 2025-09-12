@@ -38,9 +38,9 @@ class UserAPIView(APIView):
 
 class UserEditProfile(APIView):
 # PUT (แก้ไข user)
-   def put(self, request, pk):
-      print('pk: ', pk)
-      user = get_object_or_404(User, user_id=pk) # คือ ฟังก์ชัน helper ที่ Django มีมาให้ ใช้สำหรับ ไป ค้นหา object ใน database จาก model ที่ระบุ ถ้าเจอ → return object ออกมา ถ้าไม่เจอ → return HTTP 404 Error (Http404) อัตโนมัติ
+   def put(self, request, idUser):
+      print('idUser: ', idUser)
+      user = get_object_or_404(User, user_id=idUser) # คือ ฟังก์ชัน helper ที่ Django มีมาให้ ใช้สำหรับ ไป ค้นหา object ใน database จาก model ที่ระบุ ถ้าเจอ → return object ออกมา ถ้าไม่เจอ → return HTTP 404 Error (Http404) อัตโนมัติ
       # partial=True → validate เฉพาะ field ที่ส่งมา
       serializer = UserSerializer(user, data=request.data, partial=True) #partial=True หมายความว่า DRF จะ validate เฉพาะ field ที่ส่งมา
       if serializer.is_valid(raise_exception=True):

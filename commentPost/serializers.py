@@ -10,6 +10,7 @@ class UserSerializer(serializers.Serializer):
    username = serializers.CharField(source="user.username", read_only=True)
    picture = serializers.CharField(source="user.profile_picture_url", read_only=True)
 
+
 class CommentSerializer(serializers.ModelSerializer):
    """
    Main Serializer สำหรับแสดงข้อมูล Comment (สำหรับ GET requests)
@@ -19,12 +20,16 @@ class CommentSerializer(serializers.ModelSerializer):
    replies_count = serializers.SerializerMethodField()
    replies = serializers.SerializerMethodField()
    
+   user_id = serializers.CharField(source="user.user_id", read_only=True)
+   username = serializers.CharField(source="user.username", read_only=True)
+   picture = serializers.CharField(source="user.profile_picture_url", read_only=True)
    class Meta:
       model = Comment
       fields = '__all__'
+      # ['id',"replies_count","replies","content","status","updated_at","created_at","article","parent"]
       # fields ที่ไม่ให้แก้ไข
       extra_fields=['user_id','username','picture']
-      read_only_fields = ['user', 'created_at', 'updated_at']
+      # read_only_fields = ['user', 'created_at', 'updated_at']
 
    def get_replies_count(self, obj):
       """
