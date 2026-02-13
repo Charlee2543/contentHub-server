@@ -1,5 +1,6 @@
 # app_name/serializers.py
 
+import re
 from rest_framework import serializers
 from .models import User
 
@@ -63,11 +64,11 @@ class LoginSerializer(serializers.Serializer):
    # print('password: ', password)
 
    def validate(self, data):
-      print('self: ', self)
+      # print('self: ', self)
       email = data.get('email')
-      print('username: ', email)
+      # print('username: ', email)
       password = data.get('password')
-      print('password: ', password)
+      # print('password: ', password)
       
       if email and password:
             try:
@@ -81,3 +82,35 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Must include username and password")
       
       return data
+   
+class EditProfile (serializers.Serializer):
+   email = serializers.CharField(required=True)
+   username = serializers.CharField(required=True)
+   user_id = serializers.CharField(required=True)
+   def validate_username(self, value):
+      """Validate username field"""
+      responseError=[]
+      if len(value) < 3:
+            # raise serializers.ValidationError("Username ต้องมีอย่างน้อย 3 ตัวอักษร")
+            responseError.append("Username ต้องมีอย่างน้อย 3 ตัวอักษร")
+      if not re.match(r'^[a-zA-Z0-9]+$', value):
+         responseError.append("Username ต้องเป็นตัวอักษรภาษาอังกฤษหรือตัวเลขเท่านั้น")
+      print('responseError: ', responseError)
+      if responseError:
+         raise serializers.ValidationError(responseError)
+      return value
+   
+   def validate_email(self, value):
+      print('validate_email')
+      """Validate email field"""
+      # print('self: ', self)
+      userUuid=self.initial_data.get('uuid')
+      # print('uuid: ', userUuid)
+      oldEmail=User.objects.get(user_id=userUuid).email
+      # print('oldEmail: ', oldEmail)
+      #หรือใช้อันนี้ได้ if User.objects.filter(email=value).exclude(user_id=userUuid).exists():
+      if User.objects.filter(email=value).exists():
+         # print('value!=oldEmail: ', value!=oldEmail)
+         if value!=oldEmail:
+            raise serializers.ValidationError("Email นี้ถูกใช้แล้ว")
+      return value
