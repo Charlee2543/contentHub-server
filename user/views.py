@@ -19,6 +19,7 @@ from rest_framework_simplejwt.settings import api_settings
 # Create your views here.
 class UserAPIView(APIView):
    def get(self,request):
+      print("get user more")
       posts = User.objects.all()
       # แปลง object ที่ได้่เป็น json
       serializer = UserSerializer(posts, many=True)
@@ -38,6 +39,13 @@ class UserAPIView(APIView):
 
 class UserEditProfile(APIView):
 # PUT (แก้ไข user)
+   def get(self,request,UserId):
+      user = get_object_or_404(User, user_id=UserId)
+      # แปลง object ที่ได้่เป็น json
+      serializer = UserSerializer(user)
+      # print('serializer: ', serializer)
+      return Response(serializer.data, status=status.HTTP_200_OK)
+   
    def put(self, request):
       target_uuid = request.data.get('uuid')
       user = get_object_or_404(User, user_id=target_uuid) # คือ ฟังก์ชัน helper ที่ Django มีมาให้ ใช้สำหรับ ไป ค้นหา object ใน database จาก model ที่ระบุ ถ้าเจอ → return object ออกมา ถ้าไม่เจอ → return HTTP 404 Error (Http404) อัตโนมัติ

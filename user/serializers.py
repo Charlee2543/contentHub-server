@@ -84,9 +84,12 @@ class LoginSerializer(serializers.Serializer):
       return data
    
 class EditProfile (serializers.Serializer):
-   email = serializers.CharField(required=True)
-   username = serializers.CharField(required=True)
    user_id = serializers.CharField(required=True)
+   username = serializers.CharField(required=True)
+   email = serializers.CharField(required=True)
+   profile_picture_url= serializers.CharField(required=True)
+   created_at= serializers.CharField(required=True)
+   updated_at= serializers.CharField(required=True)
    def validate_username(self, value):
       """Validate username field"""
       responseError=[]
