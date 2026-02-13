@@ -90,6 +90,7 @@ class EditProfile (serializers.Serializer):
    profile_picture_url= serializers.CharField(required=True)
    created_at= serializers.CharField(required=True)
    updated_at= serializers.CharField(required=True)
+   
    def validate_username(self, value):
       """Validate username field"""
       responseError=[]

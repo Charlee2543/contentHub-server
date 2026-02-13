@@ -42,7 +42,7 @@ class UserEditProfile(APIView):
    def get(self,request,UserId):
       user = get_object_or_404(User, user_id=UserId)
       # แปลง object ที่ได้่เป็น json
-      serializer = UserSerializer(user)
+      serializer = EditProfile(user)
       # print('serializer: ', serializer)
       return Response(serializer.data, status=status.HTTP_200_OK)
    
