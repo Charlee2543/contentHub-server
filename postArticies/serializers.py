@@ -3,6 +3,7 @@ from .models import Articles
 
 #ใช้ Django REST Framework แปลงข้อมูล model เป็น JSON response
 class PostSerializer(serializers.ModelSerializer):
+    # serializers.ModelSerializer จะจัดการ create update ให้เองโดยกำหนด class Meta
     author_username = serializers.CharField(source="author.username", read_only=True)
 
     # author_username = serializers.SerializerMethodField()

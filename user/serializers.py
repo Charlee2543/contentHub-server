@@ -108,9 +108,29 @@ class EditProfile (serializers.Serializer):
       # print('uuid: ', userUuid)
       oldEmail=User.objects.get(user_id=userUuid).email
       # print('oldEmail: ', oldEmail)
+      responseError=[]
       #หรือใช้อันนี้ได้ if User.objects.filter(email=value).exclude(user_id=userUuid).exists():
       if User.objects.filter(email=value).exists():
          # print('value!=oldEmail: ', value!=oldEmail)
          if value!=oldEmail:
-            raise serializers.ValidationError("Email นี้ถูกใช้แล้ว")
+            responseError.append("Email นี้ถูกใช้แล้ว")
+      if not re.match(r'^[a-zA-Z0-9@._-]+$', value):
+         responseError.append("Email ใช้ตัวอักษรได้แค่ a-z,A-Z,0-9,@,.,_,- เท่านั้น")
+      if responseError:
+         raise serializers.ValidationError(responseError)
       return value
+   
+   def update(self, instance, validated_data):
+      print('self: ', self)
+      print('instance: ', instance)
+      print('validated_data: ', validated_data)
+      # instance คือ object 'user' ที่ส่งมาจาก View
+      # validated_data คือ ข้อมูลที่ผ่านการตรวจสอบแล้ว
+      
+      instance.email = validated_data.get('email', instance.email)
+      instance.username = validated_data.get('username', instance.username)
+      # ปกติ user_id มักจะไม่ให้แก้ แต่ถ้าจะแก้ก็ใส่แบบเดียวกันครับ
+      # instance.user_id = validated_data.get('user_id', instance.user_id)
+      
+      instance.save() # บันทึกลง Database
+      return instance
