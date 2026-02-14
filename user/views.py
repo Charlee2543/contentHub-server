@@ -47,8 +47,13 @@ class UserEditProfile(APIView):
       return Response(serializer.data, status=status.HTTP_200_OK)
    
    def put(self, request):
-      target_uuid = request.data.get('uuid')
+      print('request.data: ', request.data)
+      requestData=request.data.get('data')
+      print('requestData: ', requestData)
+      target_uuid =requestData.get("userId")
+      print('target_uuid: ', target_uuid)
       user = get_object_or_404(User, user_id=target_uuid) # คือ ฟังก์ชัน helper ที่ Django มีมาให้ ใช้สำหรับ ไป ค้นหา object ใน database จาก model ที่ระบุ ถ้าเจอ → return object ออกมา ถ้าไม่เจอ → return HTTP 404 Error (Http404) อัตโนมัติ
+      print('pass user 404')
       # partial=True → validate เฉพาะ field ที่ส่งมา
       # print('user: ', user)
       serializer = EditProfile(user, data=request.data, partial=True) #partial=True หมายความว่า DRF จะ validate เฉพาะ field ที่ส่งมา

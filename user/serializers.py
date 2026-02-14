@@ -108,7 +108,7 @@ class EditProfile (serializers.Serializer):
       print('validate_email')
       """Validate email field"""
       # print('self: ', self)
-      userUuid=self.initial_data.get('uuid')
+      userUuid=self.initial_data.get('userId')
       # print('uuid: ', userUuid)
       oldEmail=User.objects.get(user_id=userUuid).email
       # print('oldEmail: ', oldEmail)
